@@ -109,6 +109,17 @@
         port: "{{ https_port }}"
         proto: tcp
 
+# UFW Allow SSH
+    - name: UFW - OpenSSH
+      ufw:
+        rule: allow
+        name: OpenSSH
+        
+# Enable UFW
+    - name: Enable UFW
+      ufw:
+        state: enabled
+
 
 # WordPress Configuration
     - name: Create document root

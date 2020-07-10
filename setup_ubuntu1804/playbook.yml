@@ -37,9 +37,14 @@
 
     - name: Set authorized key for remote user
       authorized_key:
-        user: "{{ create_user }}"
+        user: deploy
         state: present
-        key: "{{ copy_local_key }}"
+        key: '{{ item }}'
+      with_file:
+        - public_keys/zek_mba.pub
+        - public_keys/zek_windows.pub
+        - public_keys/joeheng.pub
+        - public_keys/joeheng_macmini.pub
 
     - name: Disable password authentication for root
       lineinfile:
@@ -48,21 +53,21 @@
         regexp: '^#?PermitRootLogin'
         line: 'PermitRootLogin prohibit-password'
 
-# Install Packages
-    - name: Update apt
-      apt: update_cache=yes
+# # Install Packages
+#     - name: Update apt
+#       apt: update_cache=yes
 
-    - name: Install required system packages
-      apt: name={{ sys_packages }} state=latest
+#     - name: Install required system packages
+#       apt: name={{ sys_packages }} state=latest
 
-# UFW Setup
-    - name: UFW - Allow SSH connections
-      ufw:
-        rule: allow
-        name: OpenSSH
+# # UFW Setup
+#     - name: UFW - Allow SSH connections
+#       ufw:
+#         rule: allow
+#         name: OpenSSH
 
-    - name: UFW - Deny all other incoming traffic by default
-      ufw:
-        state: enabled
-        policy: deny
-        direction: incoming
+#     - name: UFW - Deny all other incoming traffic by default
+#       ufw:
+#         state: enabled
+#         policy: deny
+#         direction: incoming

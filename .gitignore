@@ -1,4 +1,5 @@
 *.retry
 .idea
 
+setup_ubuntu1804/vars/default.yml
 wordpress_lemp_ubuntu1804/vars/default.yml
