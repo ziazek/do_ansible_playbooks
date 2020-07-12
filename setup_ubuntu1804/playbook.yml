@@ -53,6 +53,17 @@
         regexp: '^#?PermitRootLogin'
         line: 'PermitRootLogin prohibit-password'
 
+# Unattended upgrades
+  roles:
+    - role: jnv.unattended-upgrades
+      unattended_origins_patterns:
+      - 'origin=Ubuntu,archive=${distro_codename}-security'
+      - 'o=Ubuntu,a=${distro_codename}'
+      - 'o=Ubuntu,a=${distro_codename}-updates'
+      unattended_automatic_reboot: true
+      unattended_automatic_reboot_time: 15:30
+      unattended_mail: "{{ unattended_upgrades_email }}"
+
 # # Install Packages
 #     - name: Update apt
 #       apt: update_cache=yes

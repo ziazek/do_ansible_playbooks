@@ -8,25 +8,25 @@
     - vars/default.yml
 
   tasks:
-    - name: Upgrade system
-      apt: upgrade=dist update_cache=yes
+    # - name: Upgrade system
+    #   apt: upgrade=dist update_cache=yes
 
-    - name: Install Prerequisites
-      apt: name={{ item }} update_cache=yes state=latest force_apt_get=yes
-      loop: [ 'aptitude' ]
+    # - name: Install Prerequisites
+    #   apt: name={{ item }} update_cache=yes state=latest force_apt_get=yes
+    #   loop: [ 'aptitude' ]
     
-    - name: Add certbot repository
-      apt_repository:
-        repo: 'ppa:certbot/certbot'
+    # - name: Add certbot repository
+    #   apt_repository:
+    #     repo: 'ppa:certbot/certbot'
 
     - name: Install LEMP Packages & Let's Encrypt certbot
       apt: name={{ item }} update_cache=yes state=latest
-      loop: [ 'nginx', 'mysql-server', 'python3-pymysql', 'php-fpm', 'php-mysql', 'certbot', 'python3-certbot-nginx' ]
+      loop: [ 'nginx', 'mysql-server', 'python3-pymysql', 'php-fpm', 'php-mysql', 'php-simplexml', 'php-curl', 'certbot', 'python3-certbot-nginx' ]
 
 # Let's Encrypt Configuration
-    - name: Generate new certificate.
-      shell: "certbot certonly --nginx --noninteractive --agree-tos --email {{ certbot_admin_email }} -d {{ http_host }}"
-      # with_items: "{{ letsencrypt_cert.results }}"
+    # - name: Generate new certificate.
+    #   shell: "certbot certonly --nginx --noninteractive --agree-tos --email {{ certbot_admin_email }} -d {{ http_host }}"
+    #   # with_items: "{{ letsencrypt_cert.results }}"
     
 # Nginx Configuration
     - name: Sets Nginx conf file
@@ -114,7 +114,7 @@
       ufw:
         rule: allow
         name: OpenSSH
-        
+
 # Enable UFW
     - name: Enable UFW
       ufw:
