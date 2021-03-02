@@ -1,5 +1,5 @@
 ##################################################
-# DO Community Playbooks: LEMP on Ubuntu 18.04
+# Zek Chak: LEMP on Ubuntu 20.04
 ##################################################
 ---
 - hosts: all
@@ -14,23 +14,20 @@
     # - name: Install Prerequisites
     #   apt: name={{ item }} update_cache=yes state=latest force_apt_get=yes
     #   loop: [ 'aptitude' ]
-    
-    # - name: Add certbot repository
-    #   apt_repository:
-    #     repo: 'ppa:certbot/certbot'
 
     # - name: Install LEMP Packages & Let's Encrypt certbot
     #   apt: name={{ item }} update_cache=yes state=latest
     #   loop: [ 'nginx', 'mysql-server', 'python3-pymysql', 'php-fpm', 'php-mysql', 'php-simplexml', 'php-curl', 'certbot', 'python3-certbot-nginx' ]
 
-    # Let's Encrypt Configuration
-    # Comment this out first until DNS has changed
+    # # Let's Encrypt Configuration
+    # # Comment this out first until DNS has changed
     # - name: Generate new certificate.
     #   shell: "certbot certonly --nginx --noninteractive --agree-tos --email {{ certbot_admin_email }} -d {{ http_host }}"
     #   when: not http_host_is_root
 
     # - name: Generate new certificate.
-    #   shell: "certbot certonly --nginx --noninteractive --agree-tos --email {{ certbot_admin_email }} -d {{ http_host }} -d www.{{ http_host }}"
+    #   shell: "certbot certonly --nginx --noninteractive --agree-tos --email {{ certbot_admin_email }} -d {{ http_host }}"
+    #   # shell: "certbot certonly --nginx --noninteractive --agree-tos --email {{ certbot_admin_email }} -d {{ http_host }} -d www.{{ http_host }}"
     #   when: http_host_is_root
     #   # with_items: "{{ letsencrypt_cert.results }}"
     

@@ -1,5 +1,13 @@
 # DO Community - Ansible Playbooks
 
+## Zek: commands to run
+
+```sh
+ansible-playbook playbook.yml -l arpcwp2021 -u root
+```
+
+## Overview
+
 A collection of minimalist Ansible playbooks for automating server setups, based on DigitalOcean's Community guides.
 
 - [Initial Server Setup for Ubuntu 18.04](https://github.com/do-community/ansible-playbooks/tree/master/setup_ubuntu1804) *

@@ -1,0 +1,15 @@
+---
+#System Settings
+php_modules: [ 'php-curl', 'php-gd', 'php-mbstring', 'php-xml', 'php-xmlrpc', 'php-soap', 'php-intl', 'php-zip' ]
+
+mysql_root_password: "K5GAj8oZxmo3rmi9TZ5uTeMf5"
+mysql_db: "gicwp"
+mysql_user: "gicwp"
+mysql_password: "bS2NV8XQeMUQceatz6A3tUz3W"
+http_host: "gicwpe-dev.jam247.dev"
+http_host_is_root: true
+http_conf: "gicwpe-dev.jam247.dev.conf"
+http_port: "80"
+https_port: "443"
+
+certbot_admin_email: "zek.chak@justaftermidnight.io"
