@@ -1,0 +1,82 @@
+##################################################
+# For GIC-WPE: Git push from DEV
+##################################################
+---
+- hosts: all
+  become: true
+  vars_files:
+    - vars/default.yml
+
+  tasks:
+    - name: Git checkout source
+      shell: 
+        cmd: git checkout {{ source_branch }}
+        chdir: "{{ wp_dir }}"
+
+    - name: Git status
+      shell: 
+        cmd: git status
+        chdir: "{{ wp_dir }}"
+      register: git_status_output
+  
+    # - debug:
+    #     var: lsoutput
+    - debug:
+        var: git_status_output.stdout_lines
+
+    - name: Git add .
+      shell: 
+        cmd: git add .
+        chdir: "{{ wp_dir }}"
+        
+    - name: Git commit
+      shell: 
+        cmd: git commit -m "{{ commit_message }}"
+        chdir: "{{ wp_dir }}"
+
+    - name: Git push to origin
+      shell: 
+        cmd: git push origin {{ source_branch }}
+        chdir: "{{ wp_dir }}"
+
+    - name: Git checkout target
+      shell: 
+        cmd: git checkout {{ target_branch }}
+        chdir: "{{ wp_dir }}"
+
+    - name: Git pull from origin
+      shell: 
+        cmd: git pull origin {{ target_branch }}
+        chdir: "{{ wp_dir }}"
+
+    - name: Git merge DEV into target
+      shell: 
+        cmd: git merge {{ source_branch }}
+        chdir: "{{ wp_dir }}"
+
+    - name: Git push target to origin
+      shell: 
+        cmd: git push origin {{ target_branch }}
+        chdir: "{{ wp_dir }}"
+
+    - name: Git checkout source
+      shell: 
+        cmd: git checkout {{ source_branch }}
+        chdir: "{{ wp_dir }}"
+
+    - name: Set ownership for plugins
+      file:
+        path: "{{ wp_dir }}/wp-content"
+        state: directory
+        recurse: yes
+        owner: www-data
+        group: www-data
+
+    - name: Set permissions for directories
+      shell: "/usr/bin/find {{ wp_dir }}/ -type d -exec chmod 750 {} \\;"
+
+    - name: Set permissions for files
+      shell: "/usr/bin/find {{ wp_dir }}/ -type f -exec chmod 640 {} \\;"
+
+
+

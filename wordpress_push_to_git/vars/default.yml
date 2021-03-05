@@ -1,0 +1,5 @@
+---
+source_branch: dev
+target_branch: uat
+wp_dir: /var/www/gicwpe-dev.jam247.dev/wordpress
+commit_message: ansible_awx:test01 5/3/21 adding plugins from DEV

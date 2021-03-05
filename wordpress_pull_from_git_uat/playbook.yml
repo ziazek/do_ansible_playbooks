@@ -1,0 +1,36 @@
+##################################################
+# For GIC-WPE: Git pull from origin
+##################################################
+---
+- hosts: all
+  become: true
+  vars_files:
+    - vars/default.yml
+
+  tasks:
+    - name: Git checkout source
+      shell: 
+        cmd: git checkout {{ source_branch }}
+        chdir: "{{ wp_dir }}"
+
+    - name: Git pull origin 
+      shell: 
+        cmd: git pull origin {{ source_branch }}
+        chdir: "{{ wp_dir }}"
+        
+    - name: Set ownership for plugins
+      file:
+        path: "{{ wp_dir }}/wp-content"
+        state: directory
+        recurse: yes
+        owner: www-data
+        group: www-data
+
+    - name: Set permissions for directories
+      shell: "/usr/bin/find {{ wp_dir }}/ -type d -exec chmod 750 {} \\;"
+
+    - name: Set permissions for files
+      shell: "/usr/bin/find {{ wp_dir }}/ -type f -exec chmod 640 {} \\;"
+
+
+
