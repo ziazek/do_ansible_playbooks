@@ -18,6 +18,23 @@
  * @package WordPress
  */
 
+/* SSL Settings */
+/**
+* If WordPress is hosted behind a reverse proxy that provides SSL, 
+* but is hosted itself without SSL, these options will initially 
+* send any requests into an infinite redirect loop. To avoid this, 
+* you may configure WordPress to recognize the HTTP_X_FORWARDED_PROTO 
+* header (assuming you have properly configured the reverse proxy 
+* to set that header).
+*/
+
+define('FORCE_SSL_ADMIN', true);
+
+/* Turn HTTPS 'on' if HTTP_X_FORWARDED_PROTO matches 'https' */
+if (strpos($_SERVER['HTTP_X_FORWARDED_PROTO'], 'https') !== false) {
+  $_SERVER['HTTPS'] = 'on';
+}
+
 // ** MySQL settings - You can get this info from your web host ** //
 /** The name of the database for WordPress */
 define( 'DB_NAME', '{{ mysql_db }}' );
@@ -49,14 +66,14 @@ define('FS_METHOD', 'direct');
  *
  * @since 2.6.0
  */
-define( 'AUTH_KEY',         '{{ lookup('password', '/dev/null chars=ascii_letters length=64') }}' );
-define( 'SECURE_AUTH_KEY',  '{{ lookup('password', '/dev/null chars=ascii_letters length=64') }}' );
-define( 'LOGGED_IN_KEY',    '{{ lookup('password', '/dev/null chars=ascii_letters length=64') }}' );
-define( 'NONCE_KEY',        '{{ lookup('password', '/dev/null chars=ascii_letters length=64') }}' );
-define( 'AUTH_SALT',        '{{ lookup('password', '/dev/null chars=ascii_letters length=64') }}' );
-define( 'SECURE_AUTH_SALT', '{{ lookup('password', '/dev/null chars=ascii_letters length=64') }}' );
-define( 'LOGGED_IN_SALT',   '{{ lookup('password', '/dev/null chars=ascii_letters length=64') }}' );
-define( 'NONCE_SALT',       '{{ lookup('password', '/dev/null chars=ascii_letters length=64') }}' );
+define( 'AUTH_KEY',         '{{ wp_auth_key }}' );
+define( 'SECURE_AUTH_KEY',  '{{ wp_secure_auth_key }}' );
+define( 'LOGGED_IN_KEY',    '{{ wp_logged_in_key }}' );
+define( 'NONCE_KEY',        '{{ wp_nonce_key }}' );
+define( 'AUTH_SALT',        '{{ wp_auth_salt }}' );
+define( 'SECURE_AUTH_SALT', '{{ wp_secure_auth_salt }}' );
+define( 'LOGGED_IN_SALT',   '{{ wp_logged_in_salt }}' );
+define( 'NONCE_SALT',       '{{ wp_nonce_salt }}' );
 
 /**#@-*/
 

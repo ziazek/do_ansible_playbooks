@@ -1,0 +1,29 @@
+---
+external_db: true
+mysql_root_user: "dbmasteruser"
+mysql_root_password: "dzkNMZ3wMpiq7FH3vraCD5ipV"
+mysql_host: "ls-b8050cceceee2768dab20ce280413ab40f0c5252.cy2gwvojh4mq.ap-southeast-1.rds.amazonaws.com"
+mysql_db: "gicwp"
+mysql_user: "gicwp"
+mysql_password: "pdP7nfZWgvt4b6n7MYz6Xw2ft"
+http_host: "gicwpe-prod.jam247.dev"
+http_host_is_root: false
+http_conf: "gicwpe-prod.jam247.dev.conf"
+http_port: "80"
+enable_https: false
+https_port: "443"
+php_debug_page: true
+git_username: GIC-WPE-PROD
+git_email: gic.support+gicwpeprod@justaftermidnight247.com
+
+# from https://api.wordpress.org/secret-key/1.1/salt/
+wp_auth_key: "gRP!F}fiztb7,&0rcm&C-9Y2=|r5>=)MTz&_||&rA+MXZ/;~NHFar(BCB<;)IS@*"
+wp_secure_auth_key: "[B7$fl9|~_Y!Sw2Q4DoX{.JZLp{G]~2EH[Y|uT-)xf&vJpP-gb|@<.fAyfa~+_wR"
+wp_logged_in_key: "]l9We+uVpqJ-B[I&I&?(UTZAAt;7Sa<fdxo|I)cp3xayqw0HuIMNi^Mi`]~#.#_o"
+wp_nonce_key: "7b#slj)@[|N2VTC.J$rX9}K%:!_3QE-absVQy6TN=pL]n*aqPfiQ$w2b7GO|5]JP"
+wp_auth_salt: "ZC!$cbI]b)&[(/+CxN&eqg7o.Ny,{3`tnY<H$hXUyYyT?SRF5r8L(X}qAEHX~(+;"
+wp_secure_auth_salt: "BIk` X&qP`|`w4Yt@,qIV^OKHe=OmOJ%X`[IGZ_fL9]<q/g6*,|]yJ|`ZWq*z+B?"
+wp_logged_in_salt: "jFT04tdk?i,BmajNw+o<eKy-#bub*g19[s_`$)WYD6%u@J,1T@(Z5s[S-7/|F3;D"
+wp_nonce_salt: ":SW~rmwF(>-||PEeD/~sg!G}^-D+P@:]Q/+Y#v[.MJa]3xyo}cukB##U- - Oy7?"
+
+certbot_admin_email: "zek.chak@justaftermidnight.io"

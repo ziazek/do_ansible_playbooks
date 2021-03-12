@@ -1,0 +1,5 @@
+---
+source_branch: uat
+target_branch: master
+wp_dir: /var/www/gicwpe-uat.jam247.dev/wordpress
+commit_message: ansible:uattest1 6/3/21 adding plugins from UAT

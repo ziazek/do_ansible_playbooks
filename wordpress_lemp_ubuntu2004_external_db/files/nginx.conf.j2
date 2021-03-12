@@ -1,5 +1,5 @@
 server {
-        listen 80;
+        listen 80 default_server;
         root /var/www/{{ http_host }}/wordpress;
         index index.php index.html index.htm index.nginx-debian.html;
         server_name {{ http_host }};
@@ -50,9 +50,5 @@ try_files $uri $uri/ /index.php$is_args$args;
                 deny all;
         }
 
-        listen 443 ssl;
-        ssl_certificate /etc/letsencrypt/live/{{ http_host }}/fullchain.pem;
-        ssl_certificate_key /etc/letsencrypt/live/{{ http_host }}/privkey.pem;
-        include /etc/letsencrypt/options-ssl-nginx.conf;
-        ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
+        # SSH settings below here
 }

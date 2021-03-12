@@ -1,11 +1,11 @@
 ##################################################
-# For GIC-WPE: Git push from DEV
+# For GIC-WPE: Git push from source
 ##################################################
 ---
 - hosts: all
   become: true
   vars_files:
-    - vars/default.yml
+    # - vars/default.yml
 
   tasks:
     - name: Git checkout source
@@ -15,29 +15,31 @@
 
     - name: Git status
       shell: 
-        cmd: git status
+        cmd: git status | grep 'nothing to commit, working tree clean'
         chdir: "{{ wp_dir }}"
       register: git_status_output
+      ignore_errors: true
   
-    # - debug:
-    #     var: lsoutput
     - debug:
-        var: git_status_output.stdout_lines
+        var: git_status_output.stdout
 
     - name: Git add .
       shell: 
         cmd: git add .
         chdir: "{{ wp_dir }}"
+      when: git_status_output.stdout == ""
         
     - name: Git commit
       shell: 
         cmd: git commit -m "{{ commit_message }}"
         chdir: "{{ wp_dir }}"
+      when: git_status_output.stdout == ""
 
     - name: Git push to origin
       shell: 
         cmd: git push origin {{ source_branch }}
         chdir: "{{ wp_dir }}"
+      when: git_status_output.stdout == ""
 
     - name: Git checkout target
       shell: 
@@ -49,7 +51,7 @@
         cmd: git pull origin {{ target_branch }}
         chdir: "{{ wp_dir }}"
 
-    - name: Git merge DEV into target
+    - name: Git merge source into target
       shell: 
         cmd: git merge {{ source_branch }}
         chdir: "{{ wp_dir }}"
@@ -64,13 +66,21 @@
         cmd: git checkout {{ source_branch }}
         chdir: "{{ wp_dir }}"
 
-    - name: Set ownership for plugins
+    - name: Set ownership for wp
       file:
-        path: "{{ wp_dir }}/wp-content"
+        path: "{{ wp_dir }}"
         state: directory
         recurse: yes
         owner: www-data
         group: www-data
+
+    # - name: Set ownership for plugins
+    #   file:
+    #     path: "{{ wp_dir }}/wp-content"
+    #     state: directory
+    #     recurse: yes
+    #     owner: www-data
+    #     group: www-data
 
     - name: Set permissions for directories
       shell: "/usr/bin/find {{ wp_dir }}/ -type d -exec chmod 750 {} \\;"

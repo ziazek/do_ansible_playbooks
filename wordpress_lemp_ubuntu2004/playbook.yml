@@ -8,16 +8,16 @@
     - vars/default.yml
 
   tasks:
-    # - name: Upgrade system
-    #   apt: upgrade=dist update_cache=yes
+    - name: Upgrade system
+      apt: upgrade=dist update_cache=yes
 
-    # - name: Install Prerequisites
-    #   apt: name={{ item }} update_cache=yes state=latest force_apt_get=yes
-    #   loop: [ 'aptitude' ]
+    - name: Install Prerequisites
+      apt: name={{ item }} update_cache=yes state=latest force_apt_get=yes
+      loop: [ 'aptitude' ]
 
-    # - name: Install LEMP Packages & Let's Encrypt certbot
-    #   apt: name={{ item }} update_cache=yes state=latest
-    #   loop: [ 'nginx', 'mysql-server', 'python3-pymysql', 'php-fpm', 'php-mysql', 'php-simplexml', 'php-curl', 'build-essential', 'php-pear', 'php-dev', 'libmcrypt-dev', 'certbot', 'python3-certbot-nginx' ]
+    - name: Install LEMP Packages & Let's Encrypt certbot
+      apt: name={{ item }} update_cache=yes state=latest
+      loop: [ 'nginx', 'mysql-server', 'python3-pymysql', 'php-fpm', 'php-mysql', 'php-simplexml', 'php-curl', 'build-essential', 'php-pear', 'php-dev', 'libmcrypt-dev', 'certbot', 'python3-certbot-nginx' ]
     
     - name: Update PECL channels for php-mcrypt
       shell: "pecl channel-update pecl.php.net"
@@ -44,41 +44,7 @@
         insertafter: "^;extension=xsl"
         line: "extension=mycrypt.so"
 
-    # # Let's Encrypt Configuration
-    # # Comment this out first until DNS has changed
-    # - name: Generate new certificate.
-    #   shell: "certbot certonly --nginx --noninteractive --agree-tos --email {{ certbot_admin_email }} -d {{ http_host }}"
-    #   when: not http_host_is_root
 
-    # - name: Generate new certificate.
-    #   shell: "certbot certonly --nginx --noninteractive --agree-tos --email {{ certbot_admin_email }} -d {{ http_host }}"
-    #   # shell: "certbot certonly --nginx --noninteractive --agree-tos --email {{ certbot_admin_email }} -d {{ http_host }} -d www.{{ http_host }}"
-    #   when: http_host_is_root
-    #   # with_items: "{{ letsencrypt_cert.results }}"
-    
-    # Nginx Configuration
-    - name: Sets Nginx certbot challenge snippet file
-      template:
-        src: "files/letsencrypt-acme-challenge.conf.j2"
-        dest: "/etc/nginx/snippets/letsencrypt-acme-challenge.conf"
-
-    - name: Sets Nginx conf file
-      template:
-        src: "files/nginx.conf.j2"
-        dest: "/etc/nginx/sites-available/{{ http_conf }}"
-
-    - name: Enables new site
-      file:
-        src: "/etc/nginx/sites-available/{{ http_conf }}"
-        dest: "/etc/nginx/sites-enabled/{{ http_conf }}"
-        state: link
-      notify: Reload Nginx
-    
-    - name: Removes "default" site
-      file:
-        path: "/etc/nginx/sites-enabled/default"
-        state: absent
-      notify: Reload Nginx
 
     # MySQL Configuration
     - name: Sets the root password 
@@ -153,7 +119,6 @@
       ufw:
         state: enabled
 
-
 # WordPress Configuration
     - name: Create document root
       file:
@@ -210,6 +175,42 @@
         src: "files/wp-config.php.j2"
         dest: "/var/www/{{ http_host }}/wordpress/wp-config.php"
       tags: [ wordpress ]
+
+    # Let's Encrypt Configuration
+    # Comment this out first until DNS has changed
+    - name: Generate new certificate.
+      shell: "certbot certonly --nginx --noninteractive --agree-tos --email {{ certbot_admin_email }} -d {{ http_host }}"
+      when: not http_host_is_root
+
+    - name: Generate new certificate.
+      shell: "certbot certonly --nginx --noninteractive --agree-tos --email {{ certbot_admin_email }} -d {{ http_host }}"
+      # shell: "certbot certonly --nginx --noninteractive --agree-tos --email {{ certbot_admin_email }} -d {{ http_host }} -d www.{{ http_host }}"
+      when: http_host_is_root
+      # with_items: "{{ letsencrypt_cert.results }}"
+    
+    # Nginx Configuration
+    - name: Sets Nginx certbot challenge snippet file
+      template:
+        src: "files/letsencrypt-acme-challenge.conf.j2"
+        dest: "/etc/nginx/snippets/letsencrypt-acme-challenge.conf"
+
+    - name: Sets Nginx conf file
+      template:
+        src: "files/nginx.conf.j2"
+        dest: "/etc/nginx/sites-available/{{ http_conf }}"
+
+    - name: Enables new site
+      file:
+        src: "/etc/nginx/sites-available/{{ http_conf }}"
+        dest: "/etc/nginx/sites-enabled/{{ http_conf }}"
+        state: link
+      notify: Reload Nginx
+    
+    - name: Removes "default" site
+      file:
+        path: "/etc/nginx/sites-enabled/default"
+        state: absent
+      notify: Reload Nginx
 
   handlers:
     - name: Reload Nginx
