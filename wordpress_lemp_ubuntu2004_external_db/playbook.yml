@@ -65,16 +65,28 @@
     - name: Add extension to cli/php.ini
       lineinfile:
         path: /etc/php/7.4/cli/php.ini
-        regexp: '^extension=mycrypt\.so'
+        regexp: '^extension=mcrypt\.so'
         insertafter: "^;extension=xsl"
-        line: "extension=mycrypt.so"
+        line: "extension=mcrypt.so"
 
     - name: Add extension to fpm/php.ini
       lineinfile:
         path: /etc/php/7.4/fpm/php.ini
-        regexp: '^extension=mycrypt\.so'
+        regexp: '^extension=mcrypt\.so'
         insertafter: "^;extension=xsl"
-        line: "extension=mycrypt.so"
+        line: "extension=mcrypt.so"
+
+    # - name: Set upload_max_filesize in cli/php.ini
+    #   lineinfile:
+    #     path: /etc/php/7.4/cli/php.ini
+    #     regexp: '^upload_max_filesize'
+    #     line: "upload_max_filesize = 20M"
+
+    - name: Set upload_max_filesize in fpm/php.ini
+      lineinfile:
+        path: /etc/php/7.4/fpm/php.ini
+        regexp: '^upload_max_filesize'
+        line: "upload_max_filesize = 20M"
 
     - name: Sets the root password 
       mysql_user: 
@@ -308,12 +320,66 @@
     #   tags: [ wordpress ]
 
     - name: Set permissions for directories
-      shell: "/usr/bin/find /var/www/{{ http_host }}/wordpress/ -type d -exec chmod 750 {} \\;"
+      shell: "/usr/bin/find /var/www/{{ http_host }}/wordpress/ -type d -exec chmod 770 {} \\;"
       tags: [ wordpress ]
 
     - name: Set permissions for files
-      shell: "/usr/bin/find /var/www/{{ http_host }}/wordpress/ -type f -exec chmod 640 {} \\;"
+      shell: "/usr/bin/find /var/www/{{ http_host }}/wordpress/ -type f -exec chmod 660 {} \\;"
       tags: [ wordpress ]
+
+    - name: Download WP CLI
+      get_url: 
+        url: https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
+        dest: /usr/local/bin/wp
+        owner: ubuntu
+        group: ubuntu
+        mode: 0775
+
+    - name: Test WP CLI
+      shell: wp --info
+      register: wpinfo
+
+    # - debug:
+    #     var: wpinfo
+
+    - name: Create logs dir for user ubuntu
+      file:
+        path: /home/ubuntu/logs
+        owner: ubuntu
+        group: ubuntu
+        mode: 0750
+        state: directory
+    
+    - name: Schedule system cron to trigger WP Cron via WP API every minute
+      cron: 
+        name: Trigger WP Cron
+        # job: wp cron event run --due-now --path=/var/www/{{ http_host }}/wordpress > /dev/null 2>&1
+        job: /usr/local/bin/wp cron event run --due-now --path=/var/www/{{ http_host }}/wordpress >> /home/ubuntu/logs/wpcron.log 2>&1
+        user: ubuntu
+    
+    - name: Logrotate for wpcron.log
+      template:
+        src: "files/wpcron-logrotate.j2"
+        dest: "/etc/logrotate.d/wpcron"
+
+    - name: Check if Site24x7 agent is running
+      command: systemctl status site24x7monagent.service
+      ignore_errors: true
+      register: site24x7_check
+
+    # - debug:
+    #     var: site24x7_check
+
+    - name: Download Site24x7 installer
+      get_url: 
+        url: https://staticdownloads.site24x7.eu/server/Site24x7InstallScript.sh
+        dest: /tmp/Site24x7InstallScript.sh
+        mode: '0660'
+      when: site24x7_check.stderr is search("could not be found")
+
+    - name: Install Site24x7 agent
+      shell: bash /tmp/Site24x7InstallScript.sh -i -key=eu_98ea273f7d45c7a3668fe83f34ed09b1
+      when: site24x7_check.stderr is search("could not be found")
 
   handlers:
     - name: Reload Nginx

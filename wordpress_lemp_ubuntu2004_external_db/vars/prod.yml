@@ -6,9 +6,9 @@ mysql_host: "ls-b8050cceceee2768dab20ce280413ab40f0c5252.cy2gwvojh4mq.ap-southea
 mysql_db: "gicwp"
 mysql_user: "gicwp"
 mysql_password: "pdP7nfZWgvt4b6n7MYz6Xw2ft"
-http_host: "gicwpe-prod.jam247.dev"
+http_host: "futureready-gic.com"
 http_host_is_root: false
-http_conf: "gicwpe-prod.jam247.dev.conf"
+http_conf: "futureready-gic.com.conf"
 http_port: "80"
 enable_https: false
 https_port: "443"

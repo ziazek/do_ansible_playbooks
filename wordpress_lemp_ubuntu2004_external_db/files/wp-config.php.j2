@@ -29,9 +29,14 @@
 */
 
 define('FORCE_SSL_ADMIN', true);
+define('FORCE_SSL_LOGIN', true);
+
+// Prevent WP-Cron from automatically checking for scheduled cron events on every page load.
+// We will use OS-level cron to trigger wp CLI `wp cron event run --due-now` instead.
+define( 'DISABLE_WP_CRON', true );
 
 /* Turn HTTPS 'on' if HTTP_X_FORWARDED_PROTO matches 'https' */
-if (strpos($_SERVER['HTTP_X_FORWARDED_PROTO'], 'https') !== false) {
+if (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https') {
   $_SERVER['HTTPS'] = 'on';
 }
 

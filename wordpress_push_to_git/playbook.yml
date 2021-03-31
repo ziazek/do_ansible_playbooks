@@ -83,10 +83,10 @@
     #     group: www-data
 
     - name: Set permissions for directories
-      shell: "/usr/bin/find {{ wp_dir }}/ -type d -exec chmod 750 {} \\;"
+      shell: "/usr/bin/find {{ wp_dir }}/ -type d -exec chmod 770 {} \\;"
 
     - name: Set permissions for files
-      shell: "/usr/bin/find {{ wp_dir }}/ -type f -exec chmod 640 {} \\;"
+      shell: "/usr/bin/find {{ wp_dir }}/ -type f -exec chmod 660 {} \\;"
 
 
 
