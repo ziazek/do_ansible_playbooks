@@ -104,12 +104,6 @@ $table_prefix = 'wp_';
  */
 define( 'WP_DEBUG', false );
 
-// For Argon2ID (PHP native password hash plugin)
-define( 'WP_MEMORY_LIMIT', '256M' );
-define( 'WP_PASSWORD_HASH_ALGO', PASSWORD_ARGON2ID );
-// memory_cost is in kibibytes 32mb == 31250 | 16mb == 15625
-define( 'WP_PASSWORD_HASH_OPTIONS', ['memory_cost' => 15625, 'time_cost' => 2, 'threads' => 2] );
-
 /* That's all, stop editing! Happy publishing. */
 
 /** Absolute path to the WordPress directory. */

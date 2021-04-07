@@ -30,7 +30,7 @@
         - build-essential
         - php-pear
         - php-dev
-        - libmcrypt-dev
+        # - libmcrypt-dev
         - certbot
         - python3-certbot-nginx
 
@@ -44,43 +44,45 @@
       loop: [ 'mysql-client']
       when: external_db
 
-    - name: Update PECL channels for php-mcrypt
-      shell: "pecl channel-update pecl.php.net"
+    # # - name: Update PECL channels for php-mcrypt
+    # #   shell: "pecl channel-update pecl.php.net"
 
-    - name: Update PECL channels for php-mcrypt step 2
-      shell: "pecl update-channels"
+    # # - name: Update PECL channels for php-mcrypt step 2
+    # #   shell: "pecl update-channels"
 
-    - name: Check if mcrypt is installed
-      shell: "pecl list | grep mcrypt"
-      register: mcrypt_installed
-      ignore_errors: true
+    # - name: Check if mcrypt is installed
+    #   shell: "pecl list | grep mcrypt"
+    #   register: mcrypt_installed
+    #   ignore_errors: true
     
-    # - debug:
-    #     var: mcrypt_installed.stdout
+    # # - debug:
+    # #     var: mcrypt_installed.stdout
 
-    - name: Install mcrypt extension
-      shell: 'printf "\n" | pecl install mcrypt'
-      when: mcrypt_installed.stdout == ""
+    # - name: Install mcrypt extension
+    #   shell: 'printf "\n" | pecl uninstall mcrypt'
+    #   when: mcrypt_installed.stdout != ""
 
-    - name: Add extension to cli/php.ini
-      lineinfile:
-        path: /etc/php/7.4/cli/php.ini
-        regexp: '^extension=mcrypt\.so'
-        insertafter: "^;extension=xsl"
-        line: "extension=mcrypt.so"
-
-    - name: Add extension to fpm/php.ini
-      lineinfile:
-        path: /etc/php/7.4/fpm/php.ini
-        regexp: '^extension=mcrypt\.so'
-        insertafter: "^;extension=xsl"
-        line: "extension=mcrypt.so"
-
-    # - name: Set upload_max_filesize in cli/php.ini
+    # - name: Add extension to cli/php.ini
     #   lineinfile:
     #     path: /etc/php/7.4/cli/php.ini
-    #     regexp: '^upload_max_filesize'
-    #     line: "upload_max_filesize = 20M"
+    #     regexp: '^extension=mcrypt\.so'
+    #     state: absent
+    #     # insertafter: "^;extension=xsl"
+    #     # line: "extension=mcrypt.so"
+
+    # - name: Add extension to fpm/php.ini
+    #   lineinfile:
+    #     path: /etc/php/7.4/fpm/php.ini
+    #     regexp: '^extension=mcrypt\.so'
+    #     state: absent
+    #     # insertafter: "^;extension=xsl"
+    #     # line: "extension=mcrypt.so"
+
+    # # - name: Set upload_max_filesize in cli/php.ini
+    # #   lineinfile:
+    # #     path: /etc/php/7.4/cli/php.ini
+    # #     regexp: '^upload_max_filesize'
+    # #     line: "upload_max_filesize = 20M"
 
     - name: Set upload_max_filesize in fpm/php.ini
       lineinfile:
