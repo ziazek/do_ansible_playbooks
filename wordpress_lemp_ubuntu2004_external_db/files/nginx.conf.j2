@@ -3,7 +3,7 @@ server {
         root /var/www/{{ http_host }}/wordpress;
         index index.php index.html index.htm index.nginx-debian.html;
         server_name {{ http_host }};
-        client_max_body_size 10m;
+        client_max_body_size 30m;
         include /etc/nginx/snippets/letsencrypt-acme-challenge.conf;
         location / {
                # try_files $uri $uri/ =404;

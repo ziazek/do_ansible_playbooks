@@ -30,7 +30,7 @@
         - build-essential
         - php-pear
         - php-dev
-        # - libmcrypt-dev
+        - php-gd
         - certbot
         - python3-certbot-nginx
 
@@ -44,51 +44,17 @@
       loop: [ 'mysql-client']
       when: external_db
 
-    # # - name: Update PECL channels for php-mcrypt
-    # #   shell: "pecl channel-update pecl.php.net"
-
-    # # - name: Update PECL channels for php-mcrypt step 2
-    # #   shell: "pecl update-channels"
-
-    # - name: Check if mcrypt is installed
-    #   shell: "pecl list | grep mcrypt"
-    #   register: mcrypt_installed
-    #   ignore_errors: true
-    
-    # # - debug:
-    # #     var: mcrypt_installed.stdout
-
-    # - name: Install mcrypt extension
-    #   shell: 'printf "\n" | pecl uninstall mcrypt'
-    #   when: mcrypt_installed.stdout != ""
-
-    # - name: Add extension to cli/php.ini
-    #   lineinfile:
-    #     path: /etc/php/7.4/cli/php.ini
-    #     regexp: '^extension=mcrypt\.so'
-    #     state: absent
-    #     # insertafter: "^;extension=xsl"
-    #     # line: "extension=mcrypt.so"
-
-    # - name: Add extension to fpm/php.ini
-    #   lineinfile:
-    #     path: /etc/php/7.4/fpm/php.ini
-    #     regexp: '^extension=mcrypt\.so'
-    #     state: absent
-    #     # insertafter: "^;extension=xsl"
-    #     # line: "extension=mcrypt.so"
-
-    # # - name: Set upload_max_filesize in cli/php.ini
-    # #   lineinfile:
-    # #     path: /etc/php/7.4/cli/php.ini
-    # #     regexp: '^upload_max_filesize'
-    # #     line: "upload_max_filesize = 20M"
-
     - name: Set upload_max_filesize in fpm/php.ini
       lineinfile:
         path: /etc/php/7.4/fpm/php.ini
         regexp: '^upload_max_filesize'
-        line: "upload_max_filesize = 20M"
+        line: "upload_max_filesize = 128M"
+
+    - name: Set post_max_size in fpm/php.ini
+      lineinfile:
+        path: /etc/php/7.4/fpm/php.ini
+        regexp: '^post_max_size'
+        line: "post_max_size = 128M"
 
     - name: Sets the root password 
       mysql_user: 
@@ -162,14 +128,6 @@
       ufw:
         rule: allow
         name: OpenSSH
-
-# # UFW Allow MySQL
-#     - name: UFW - OpenSSH
-#       ufw:
-#         rule: allow
-#         port: '3306'
-#         proto: tcp
-#       when: external_db
 
 # Enable UFW
     - name: Enable UFW
@@ -259,7 +217,7 @@
     # Git
     - name: add id_rsa to ubuntu to do git pull
       template:
-        src: "files/id_rsa_gituser.j2"
+        src: "{{ gituser_id_rsa_file }}"
         dest: "/home/ubuntu/.ssh/id_rsa"
         owner: ubuntu
         group: ubuntu
@@ -267,7 +225,7 @@
 
     - name: add id_rsa to root to do git pull
       template:
-        src: "files/id_rsa_gituser.j2"
+        src: "{{ gituser_id_rsa_file }}"
         dest: "/root/.ssh/id_rsa"
         owner: root
         group: root
@@ -293,7 +251,7 @@
 
     - name: Git remote add
       shell: 
-        cmd: git remote add origin git@bitbucket.org:justaftermidnight247/gic-wp-educational-source.git
+        cmd: git remote add origin {{ git_origin }}
         chdir: "/var/www/{{ http_host }}/wordpress"
       when: git_remotes.stdout == ""
     
@@ -380,8 +338,22 @@
       when: site24x7_check.stderr is search("could not be found")
 
     - name: Install Site24x7 agent
-      shell: bash /tmp/Site24x7InstallScript.sh -i -key=eu_98ea273f7d45c7a3668fe83f34ed09b1
+      shell: bash /tmp/Site24x7InstallScript.sh -i -key={{ site24x7_key }}
       when: site24x7_check.stderr is search("could not be found")
+
+    # Unattended upgrades
+    - name: Unattended upgrades
+      include_role:
+        name: jnv.unattended-upgrades
+      vars:
+        unattended_origins_patterns:
+        - 'origin=Ubuntu,archive=${distro_codename}-security'
+        - 'o=Ubuntu,a=${distro_codename}'
+        - 'o=Ubuntu,a=${distro_codename}-updates'
+        unattended_automatic_reboot: true
+        unattended_automatic_reboot_time: "15:30"
+        unattended_mail: false
+      when: unattended_upgrades
 
   handlers:
     - name: Reload Nginx

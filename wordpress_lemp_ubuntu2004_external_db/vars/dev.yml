@@ -17,8 +17,12 @@ http_port: "80"
 enable_https: true
 https_port: "443"
 php_debug_page: true
+git_origin: "git@bitbucket.org:justaftermidnight247/gic-wp-educational-source.git"
 git_username: GIC-WPE-DEV
 git_email: gic.support+gicwpedev@justaftermidnight247.com
+site24x7_key: eu_98ea273f7d45c7a3668fe83f34ed09b1
+unattended_upgrades: false
+gituser_id_rsa_file: "files/id_rsa_gituser.j2"
 
 # from https://api.wordpress.org/secret-key/1.1/salt/
 wp_auth_key: "ixQb-O%5BEsHt{MdG~6 5Y&_<GQf$4kHq{+5idSo<[2:e_h(a0O=c`HNOeXv%U,K"

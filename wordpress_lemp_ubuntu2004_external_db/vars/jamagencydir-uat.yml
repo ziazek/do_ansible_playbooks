@@ -1,0 +1,37 @@
+---
+#System Settings
+# php_modules: [ 'php-curl', 'php-gd', 'php-mbstring', 'php-xml', 'php-xmlrpc', 'php-soap', 'php-intl', 'php-zip' ]
+
+# dbmasteruser
+external_db: true
+mysql_root_user: "dbmasteruser"
+mysql_root_password: "JzSzr5Pbz9WYc7YgiehJjN6"
+mysql_host: "ls-ef2d4e29877e5156682249c5bb09df3126109c6e.cxntncf9ocr1.ap-southeast-1.rds.amazonaws.com"
+mysql_db: "jamwp"
+mysql_user: "jamwp"
+mysql_password: "9VcbzQzHj27S6qjLYUaKhdP"
+http_host: "jam-agency-directory-uat.jam247.dev"
+http_host_is_root: false
+http_conf: "jam-agency-directory-uat.jam247.dev.conf"
+http_port: "80"
+enable_https: true
+https_port: "443"
+php_debug_page: true
+git_origin: "git@bitbucket.org:justaftermidnight247/jam-agency-wordpress-source.git"
+git_username: JAMAGENCYDIR-UAT
+git_email: aws.jam.agencydirectory@justaftermidnight247.com
+site24x7_key: eu_1047a8db07febf764ab87fbe42461c49
+unattended_upgrades: true
+gituser_id_rsa_file: "files/id_rsa_gituser_jamagency.j2"
+
+# from https://api.wordpress.org/secret-key/1.1/salt/
+wp_auth_key: "p}E>J? L4lAr}t!^!U62@d=me4( s79sKx:-iS!yoZClt, O^R}ucca$~N,RB4A1"
+wp_secure_auth_key: "omYn[rjN6gY,-c|3#HC.tU4EGr|~v+EHz&^rT(fVIWwno&KvY^O_#,YeNa#7f[yH"
+wp_logged_in_key: "DA1ko8[6J{S637h2jT/PmA=<IDJj_vD**YuWf-E RH>-T(<%+/C|PrxV3+h[S1~0"
+wp_nonce_key: "!$Y[PL-O.u|O|WkDV6!-spMkA5d@ KS~Or:9+cTO4{bGjG*Iug%k*6V-dW8g+w-_"
+wp_auth_salt: "A_?(q`|`|T:=+<g1%zru}*|3@9UcD=i3K!9o@ QmPw>3jLm)GfsDw)bhXxsTP1Q-"
+wp_secure_auth_salt: "TCsMFkxv x.*N7t9gRDB?aU/@+hY*h[p8I,-Art]Qyw>1gf#CI+7Zv>k`?OTF+2S"
+wp_logged_in_salt: "]BgIY@2<n|{xj`(ZdLpr^pS/bUgY/E$NrVqHdjDDdzx^E8j>d6R7oln?$,Ls/K9|"
+wp_nonce_salt: "n7y$J{,I+_QIv+{KIO5]9+~mz>+K6l8v)nZIk|I$ZWB6>CaV@Cp&1Agb^-a{+?8p"
+
+certbot_admin_email: "zek.chak@justaftermidnight.io"
