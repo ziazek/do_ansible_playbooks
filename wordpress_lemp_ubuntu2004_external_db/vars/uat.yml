@@ -20,7 +20,7 @@ php_debug_page: true
 git_origin: "git@bitbucket.org:justaftermidnight247/gic-wp-educational-source.git"
 git_username: GIC-WPE-UAT
 git_email: gic.support+gicwpeuat@justaftermidnight247.com
-site24x7_key: eu_xxx
+site24x7_key: eu_98ea273f7d45c7a3668fe83f34ed09b1
 unattended_upgrades: false
 gituser_id_rsa_file: "files/id_rsa_gituser.j2"
 

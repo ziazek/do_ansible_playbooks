@@ -31,6 +31,7 @@
         - php-pear
         - php-dev
         - php-gd
+        - php-mbstring
         - certbot
         - python3-certbot-nginx
 
@@ -158,6 +159,11 @@
         dest: "/var/www/{{ http_host }}/wordpress/jamdebug-BNpvfEt8SX.php"
       when: php_debug_page
 
+    - name: remove page for PHP debugging
+      file:
+        path: "/var/www/{{ http_host }}/wordpress/jamdebug-BNpvfEt8SX.php"
+        state: absent
+      when: not php_debug_page
 
     - name: Set up wp-config
       template:
@@ -222,6 +228,7 @@
         owner: ubuntu
         group: ubuntu
         mode: 0600
+      when: enable_git
 
     - name: add id_rsa to root to do git pull
       template:
@@ -230,6 +237,7 @@
         owner: root
         group: root
         mode: 0600
+      when: enable_git
     
     - name: add gitconfig for root user
       template:
@@ -237,23 +245,26 @@
         dest: "/root/.gitconfig"
         owner: root
         group: root
+      when: enable_git
     
     - name: Git init
       shell: 
         cmd: git init
         chdir: "/var/www/{{ http_host }}/wordpress"
+      when: enable_git
     
     - name: Check if git remote exists
       shell:
         cmd: git remote
         chdir: "/var/www/{{ http_host }}/wordpress"
       register: git_remotes
+      when: enable_git
 
     - name: Git remote add
       shell: 
         cmd: git remote add origin {{ git_origin }}
         chdir: "/var/www/{{ http_host }}/wordpress"
-      when: git_remotes.stdout == ""
+      when: enable_git and git_remotes.stdout == ""
     
     - name: add ubuntu to www-data group
       user:
@@ -335,11 +346,11 @@
         url: https://staticdownloads.site24x7.eu/server/Site24x7InstallScript.sh
         dest: /tmp/Site24x7InstallScript.sh
         mode: '0660'
-      when: site24x7_check.stderr is search("could not be found")
+      when: site24x7_check.stderr is search("could not be found") and enable_site24x7
 
     - name: Install Site24x7 agent
       shell: bash /tmp/Site24x7InstallScript.sh -i -key={{ site24x7_key }}
-      when: site24x7_check.stderr is search("could not be found")
+      when: site24x7_check.stderr is search("could not be found") and enable_site24x7
 
     # Unattended upgrades
     - name: Unattended upgrades
