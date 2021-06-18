@@ -1,0 +1,38 @@
+---
+#System Settings
+# php_modules: [ 'php-curl', 'php-gd', 'php-mbstring', 'php-xml', 'php-xmlrpc', 'php-soap', 'php-intl', 'php-zip' ]
+
+external_db: true
+mysql_root_user: "gicschools_uat"
+mysql_root_password: "d8jcviyCZZj3xzPUVfdmUaRaN"
+mysql_host: "gicschools-uat.cuhlma8sauja.ap-southeast-1.rds.amazonaws.com"
+mysql_db: "gicwp"
+mysql_user: "gicwp"
+mysql_password: "CwYD4ac8od7irQNCMEmnv7QqS"
+http_host: "gicschools-uat.jam247.dev"
+http_host_is_root: false
+http_conf: "gicschools-uat.jam247.dev.conf"
+http_port: "80"
+enable_https: false
+https_port: "443"
+php_debug_page: false
+enable_git: true
+git_origin: "git@bitbucket.org:justaftermidnight247/gic-wp-educational-source.git"
+git_username: GICSCHOOLS-UAT
+git_email: gic.support+gicschoolsuat@justaftermidnight247.com
+enable_site24x7: false
+site24x7_key: not_applicable
+unattended_upgrades: false
+gituser_id_rsa_file: "files/id_rsa_gituser.j2"
+
+# from https://api.wordpress.org/secret-key/1.1/salt/
+wp_auth_key: "ge_YtO}|z};E7jP|W[f5|{ ~If4$iF4+[<ap-,II=i*}+}Na)vc*r|)<1m#r8|[k"
+wp_secure_auth_key: "_=%4[.cJoT GFzZm?-Ix$22Y@+}spuh|9=IE+Rw,&{=/1nKQSYD!(Iw;p#[[M4Up"
+wp_logged_in_key: "}3FHd;;o`dZ.$%/EM9*=!1~^lZ?P4!$ChCYJ%q+vU{ocBSa/,_u6I.%XvOF.-L|D"
+wp_nonce_key: "MukMg#na|n#hN}uC!OiY3R$QQ5?E+qOLt`!(yE_fh@i1t:9G+{+d+8G^^kIg+<I1"
+wp_auth_salt: "-8|qR,X_=yvhw)hn>&_B-QPNkL%NC!nk[m8eOX4Pojbmmio]zWsrrtD84c:=!`PY"
+wp_secure_auth_salt: ":ytyb1~i5B_ Jw+:5+|se;~W&.nDHpscJvnmDf5/!jeg77B$(7Et6Ne2dT`-h_kP"
+wp_logged_in_salt: "K9]?v>3`bRQCMtWRCkWmDz@o(==ZMayd_-5&KY|F;v$6BvvM. 3=PG|KVy7:68Qe"
+wp_nonce_salt: "|E*KOP-ya9- C.`y QYMcz3!O?R[wr<<C(8&?umBt]Hx5kwKU+_mYcUP>iBWRDJ`"
+
+certbot_admin_email: "zek.chak@justaftermidnight.io"

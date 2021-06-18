@@ -17,6 +17,7 @@ http_port: "80"
 enable_https: false
 https_port: "443"
 php_debug_page: true
+enable_git: true
 git_origin: "git@bitbucket.org:justaftermidnight247/jam-agency-wordpress-source.git"
 git_username: JAMAGENCYDIR-PROD
 git_email: aws.jam.agencydirectory@justaftermidnight247.com

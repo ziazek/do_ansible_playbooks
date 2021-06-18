@@ -13,6 +13,7 @@ http_port: "80"
 enable_https: false
 https_port: "443"
 php_debug_page: false
+enable_git: true
 git_origin: "git@bitbucket.org:justaftermidnight247/gic-wp-educational-source.git"
 git_username: GIC-WPE-PROD
 git_email: gic.support+gicwpeprod@justaftermidnight247.com

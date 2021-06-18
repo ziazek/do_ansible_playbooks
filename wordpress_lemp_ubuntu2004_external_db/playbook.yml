@@ -316,9 +316,9 @@
     - name: Create logs dir for user ubuntu
       file:
         path: /home/ubuntu/logs
-        owner: ubuntu
-        group: ubuntu
-        mode: 0750
+        owner: www-data
+        group: www-data
+        mode: 0775
         state: directory
     
     - name: Schedule system cron to trigger WP Cron via WP API every minute
@@ -326,7 +326,7 @@
         name: Trigger WP Cron
         # job: wp cron event run --due-now --path=/var/www/{{ http_host }}/wordpress > /dev/null 2>&1
         job: /usr/local/bin/wp cron event run --due-now --path=/var/www/{{ http_host }}/wordpress >> /home/ubuntu/logs/wpcron.log 2>&1
-        user: ubuntu
+        user: www-data
     
     - name: Logrotate for wpcron.log
       template:

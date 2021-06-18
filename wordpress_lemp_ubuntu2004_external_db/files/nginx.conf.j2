@@ -4,10 +4,10 @@ server {
         index index.php index.html index.htm index.nginx-debian.html;
         server_name {{ http_host }};
 
-        set $domain_name {{ http_host }};
-        if ($http_host != $domain_name) {
-                return 403;
-        }
+        # set $domain_name {{ http_host }};
+        # if ($http_host != $domain_name) {
+        #       return 403;
+        # }
 
         client_max_body_size 30m;
         include /etc/nginx/snippets/letsencrypt-acme-challenge.conf;
